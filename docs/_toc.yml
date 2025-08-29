@@ -23,11 +23,14 @@ parts:
     - file: core/common_tasks/fine_tuning
     - file: core/common_tasks/workflows
     - file: core/uma_faq
+  - file: uma_tutorials/summary
+    sections:
+    - file: uma_tutorials/uma_tutorial
   - file: core/uma_examples/summary
     sections:
     - file: core/uma_examples/uma_tutorial
   - file: core/generative_models
-  
+
 - caption: Molecules & Molecular Crystals
   chapters:
   - file: molecules/datasets/summary
@@ -35,6 +38,7 @@ parts:
     - file: molecules/datasets/omol25
     - file: molecules/datasets/omc25
   - file: molecules/models
+  - file: molecules/leaderboard
   - file: molecules/FAQ
 - caption: Heterogeneous Catalysis
   chapters:
@@ -74,7 +78,8 @@ parts:
   chapters:
   - file: dac/datasets/summary
     sections:
-    - file: dac/datasets/odac
+    - file: dac/datasets/odac25
+    - file: dac/datasets/odac23
   - file: dac/models
   - file: dac/examples_tutorials/summary
     sections:

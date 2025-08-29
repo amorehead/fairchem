@@ -13,7 +13,7 @@ from typing import TYPE_CHECKING, Any, ClassVar
 
 import numpy as np
 import pandas as pd
-from pymatgen.io.ase import MSONAtoms
+from monty.dev import requires
 from tqdm import tqdm
 
 from fairchem.core.components.calculate import CalculateRunner
@@ -24,6 +24,14 @@ from fairchem.core.components.calculate.recipes.utils import (
     get_property_dict_from_atoms,
 )
 
+try:
+    from pymatgen.io.ase import MSONAtoms
+
+    pmg_installed = True
+except ImportError:
+    pmg_installed = False
+
+
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
@@ -32,6 +40,7 @@ if TYPE_CHECKING:
     from fairchem.core.datasets import AseDBDataset
 
 
+@requires(pmg_installed, message="Requires `pymatgen` to be installed")
 class RelaxationRunner(CalculateRunner):
     """Relax a sequence of several structures/molecules.
 
@@ -115,6 +124,8 @@ class RelaxationRunner(CalculateRunner):
                 )
                 results.update(
                     {
+                        "opt_nsteps": atoms.info.get("opt_nsteps", np.nan),
+                        "opt_converged": atoms.info.get("opt_converged", np.nan),
                         "errors": "",
                         "traceback": "",
                     }
@@ -126,6 +137,8 @@ class RelaxationRunner(CalculateRunner):
                     {
                         "errors": f"{ex!r}",
                         "traceback": traceback.format_exc(),
+                        "opt_nsteps": np.nan,
+                        "opt_converged": np.nan,
                     }
                 )
 
@@ -158,6 +171,3 @@ class RelaxationRunner(CalculateRunner):
 
     def save_state(self, checkpoint_location: str, is_preemption: bool = False) -> bool:
         return True
-
-    def load_state(self, checkpoint_location: str | None) -> None:
-        return
