@@ -250,7 +250,8 @@ class WandBSingletonLogger:
 
         # if step is not specified, wandb will use an auto-incremented step: https://docs.wandb.ai/ref/python/log/
         # otherwise the user must increment it manually (not recommended)
-        wandb.log(update_dict, step=step, commit=commit)
+        wandb.log(update_dict, commit=commit) # avoid specifying step to support auto-resuming from a checkpoint
+        # wandb.log(update_dict, step=step, commit=commit)
 
     def log_table(
         self, name: str, cols: list, data: list, step: int | None = None, commit=False
